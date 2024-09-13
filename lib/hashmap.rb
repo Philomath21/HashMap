@@ -6,7 +6,7 @@ class HashMap
   def initialize
     @capacity = 16
     @array_of_buckets = Array.new(@capacity) { Array.new } # rubocop:disable Style/EmptyLiteral
-    @entries = 0
+    @entries_i = 0
     @load_fact = 0.75
   end
 
@@ -18,25 +18,48 @@ class HashMap
     hash_code
   end
 
+  def length
+    @entries_i
+  end
+
+  def clear
+    initialize
+  end
+
+  def keys
+    @array_of_buckets.flatten(1).map { |pair| pair[0] }
+  end
+
+  def values
+    @array_of_buckets.flatten(1).map { |pair| pair[1] }
+  end
+
+  def entries
+    @array_of_buckets.flatten(1)
+  end
+
   def get(key)
-    # Retrieving index of bucket using hash code
     index = hash(key) % @capacity
 
-    # @array_of_buckets[index] is bucket at index
-    # finding key in pairs [key, value] in bucket
     @array_of_buckets[index].each do |pair|
       return pair[1] if pair[0] == key
     end
   end
 
   def has?(key)
-    get(key).nil? ? false : true
+    index = hash(key) % @capacity
+
+    @array_of_buckets[index].each do |pair|
+      return true if pair[0] == key
+    end
+    false
   end
 
   def grow_hashmap
     copy = @array_of_buckets.flatten(1)
     @capacity *= 2
     @array_of_buckets = Array.new(@capacity) { Array.new } # rubocop:disable Style/EmptyLiteral
+    @entries_i = 0
 
     copy.each do |pair|
       set(pair[0], pair[1])
@@ -44,11 +67,8 @@ class HashMap
   end
 
   def set(key, value)
-    # Retrieving index of bucket using hash code
     index = hash(key) % @capacity
 
-    # @array_of_buckets[index] is bucket at index
-    # finding key in pairs [key, value] in bucket
     found_key = false
     @array_of_buckets[index].each do |pair|
       if pair[0] == key
@@ -59,13 +79,16 @@ class HashMap
 
     unless found_key
       @array_of_buckets[index].push [key, value]
-      @entries += 1
+      @entries_i += 1
     end
 
-    # Growing the hash map if load factor is crossed
-    return unless @entries > @capacity * @load_fact
+    grow_hashmap if @entries_i > @capacity * @load_fact
+  end
 
-    grow_hashmap
+  def remove(key)
+    index = hash(key) % @capacity
+    @array_of_buckets[index].delete_if { |pair| pair[0] == key }
+    @array_of_buckets
   end
 
   def to_s

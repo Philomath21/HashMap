@@ -22,21 +22,19 @@ p test
 test.set('moon', 'silver')
 p test
 
-[
-  [],
-  [%w[elephant gray]],
-  [],
-  [%w[carrot orange]],
-  [%w[frog green]],
-  [%w[banana yellow]],
-  [],
-  [],
-  [],
-  [],
-  [%w[apple red]],
-  [%w[grape purple], %w[hat black]],
-  [%w[dog brown], %w[lion golden]],
-  [['ice cream', 'white']],
-  [%w[jacket blue]],
-  [%w[kite pink]]
-]
+puts test.length
+
+p test.keys
+
+p test.values
+
+p test.entries
+
+puts test.get('lion')
+
+puts test.has?('lion')
+
+p test.remove('lion')
+
+puts test.clear
+p test

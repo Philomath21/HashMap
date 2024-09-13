@@ -36,10 +36,10 @@ class HashSet
     # getting index to bucket from hash code
     index = hash(key) % @capacity_i
 
-    # Checking if the bucket includes key, swapping the value if so
+    # Checking if the bucket includes key, exiting the function without doing anything
     return if @buckets_a[index].include? key
 
-    # If bucket does not already have key, pushing key-value pair
+    # If bucket does not already have key, pushing key
     @buckets_a[index].push key
     @entries_i += 1
 

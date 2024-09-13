@@ -1,10 +1,10 @@
 # HashMap
 class HashSet
   def initialize(capacity = 16, load_fact = 0.75)
-    @capacity = capacity
-    @array_of_buckets = Array.new(@capacity) { [] }
+    @capacity_i = capacity
+    @buckets_a = Array.new(@capacity_i) { [] }
     @entries_i = 0
-    @load_fact = load_fact
+    @load_fact_i = load_fact
   end
 
   def hash(key)
@@ -23,47 +23,44 @@ class HashSet
   end
 
   def keys
-    @array_of_buckets.flatten
+    @buckets_a.flatten
   end
 
   def has?(key)
-    index = hash(key) % @capacity
-
-    @array_of_buckets[index].each do |key_in_bucket|
-      return true if key_in_bucket == key
-    end
+    index = hash(key) % @capacity_i
+    @buckets_a[index].each { |bucket_key| return true if bucket_key == key }
     false
   end
 
   def set(key)
     # getting index to bucket from hash code
-    index = hash(key) % @capacity
+    index = hash(key) % @capacity_i
 
     # Checking if the bucket includes key, swapping the value if so
-    return if @array_of_buckets[index].include? key
+    return if @buckets_a[index].include? key
 
     # If bucket does not already have key, pushing key-value pair
-    @array_of_buckets[index].push key
+    @buckets_a[index].push key
     @entries_i += 1
 
     # Growing function if entries are exceeding load factor
-    return unless @entries_i > @capacity * @load_fact
+    return unless @entries_i > @capacity_i * @load_fact_i
 
-    copy_a = @array_of_buckets.flatten
-    initialize(@capacity * 2)
-    copy_a.each { |key_in_set| set(key_in_set) }
+    copy_a = keys
+    initialize(@capacity_i * 2)
+    copy_a.each { |stored_key| set(stored_key) }
   end
 
   def remove(key)
-    index = hash(key) % @capacity # index to bucket
-    @array_of_buckets[index].delete key
-    @array_of_buckets
+    index = hash(key) % @capacity_i # index to bucket
+    @buckets_a[index].delete key
+    @buckets_a
   end
 
   def to_s
-    "  capacity = #{@capacity}
-  entries_i = #{@entries_i}
-  load_fact = #{@load_fact}
-  HashMap = #{@array_of_buckets}"
+    "  capacity = #{@capacity_i}
+  entries = #{@entries_i}
+  load_fact = #{@load_fact_i}
+  HashSet = #{@buckets_a}"
   end
 end

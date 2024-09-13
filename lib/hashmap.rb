@@ -81,6 +81,9 @@ class HashMap
   end
 
   def to_s
-    @array_of_buckets
+    "  capacity = #{@capacity}
+  entries_i = #{@entries_i}
+  load_fact = #{@load_fact}
+  HashMap = #{@array_of_buckets}"
   end
 end

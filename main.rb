@@ -31,8 +31,10 @@ p test.values
 p test.entries
 
 puts test.get('lion')
+puts test.get('li')
 
 puts test.has?('lion')
+puts test.has?('li')
 
 p test.remove('lion')
 

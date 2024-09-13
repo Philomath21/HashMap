@@ -78,9 +78,9 @@ class HashMap
   end
 
   def to_s
-    "  capacity_i = #{@capacity_i}
-  entries_i = #{@entries_i}
-  load_fact_i = #{@load_fact_i}
+    "  capacity = #{@capacity_i}
+  entries = #{@entries_i}
+  load_fact = #{@load_fact_i}
   HashMap = #{@buckets_a}"
   end
 end
